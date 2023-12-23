@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://bpogdemkdgtug"]
+
+[ext_resource type="PackedScene" uid="uid://df0xqxcqv0rld" path="res://scenes/player.tscn" id="1_ffk2f"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="2_3w31r"]
+[ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/ground.tscn" id="3_at54k"]
+[ext_resource type="Shader" uid="uid://camjyvxeib5vi" path="res://pixelation.tres" id="3_f0qx8"]
+[ext_resource type="Texture2D" uid="uid://dhx2b1uqbyruu" path="res://icon.svg" id="4_0euw1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rguwr"]
+shader = ExtResource("3_f0qx8")
+shader_parameter/Pixelisation = 512.0
+
+[node name="Main" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_ffk2f")]
+
+[node name="CameraPivot" type="Marker3D" parent="Player" node_paths=PackedStringArray("cam", "ray")]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+script = ExtResource("2_3w31r")
+cam = NodePath("Camera3D")
+ray = NodePath("RayCast3D")
+mouse_sensitivity = 0.005
+collision_multiplier = 0.95
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.96046e-08, 5)
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/CameraPivot"]
+target_position = Vector3(0, 0, 5)
+
+[node name="Ground" parent="." instance=ExtResource("3_at54k")]
+
+[node name="PixelShader" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_rguwr")
+position = Vector2(576, 324)
+scale = Vector2(9, 5.0625)
+texture = ExtResource("4_0euw1")
