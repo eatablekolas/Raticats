@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://df0xqxcqv0rld"]
+[gd_scene load_steps=7 format=3 uid="uid://df0xqxcqv0rld"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_gdhbs"]
+[ext_resource type="Script" path="res://scripts/character.gd" id="2_r6ko3"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="3_7mt5t"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4osji"]
 
@@ -11,13 +12,37 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_px3ku"]
 material = SubResource("StandardMaterial3D_i8hnj")
 
-[node name="Player" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-collision_layer = 2
-script = ExtResource("1_gdhbs")
+[sub_resource type="SphereShape3D" id="SphereShape3D_ejlmb"]
+margin = 0.1
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Player" type="Node3D"]
+
+[node name="Character" type="CharacterBody3D" parent="."]
+collision_layer = 2
+script = ExtResource("2_r6ko3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character"]
 shape = SubResource("CapsuleShape3D_4osji")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
 mesh = SubResource("CapsuleMesh_px3ku")
+skeleton = NodePath("../../..")
+
+[node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("player", "cam", "spring_arm")]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+script = ExtResource("3_7mt5t")
+player = NodePath("../..")
+cam = NodePath("SpringArm3D/Camera3D")
+spring_arm = NodePath("SpringArm3D")
+mouse_sensitivity = 0.01
+collision_multiplier = 0.95
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Character/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_ejlmb")
+spring_length = 5.0
+margin = 0.1
+
+[node name="Camera3D" type="Camera3D" parent="Character/CameraPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+current = true
