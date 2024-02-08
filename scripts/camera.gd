@@ -1,8 +1,9 @@
 extends Marker3D
 
-@export var player: Node3D
 @export var cam: Camera3D
 @export var spring_arm: SpringArm3D
+@export var invert_x_axis: bool
+@export var invert_y_axis: bool
 
 @export_range(0.0001, 0.1, 0.0001) var mouse_sensitivity: float = 1
 @export_range(0.1, 1.0, 0.01) var collision_multiplier: float = 0.9
@@ -24,9 +25,10 @@ func _ready() -> void:
 func _process(delta) -> void:
 	var mouse_input = Input.get_last_mouse_velocity() * delta * mouse_sensitivity
 	var euler_rotation = global_transform.basis.get_euler()
-	euler_rotation.x += mouse_input.y
-	euler_rotation.x = clamp(euler_rotation.x, -max_up_angle, max_down_angle)
-	euler_rotation.y += mouse_input.x
-	global_transform.basis = Basis.from_euler(euler_rotation)
 	
-	#player.cam_rotate(euler_rotation)
+	euler_rotation.x += mouse_input.y * (-1 if invert_y_axis else 1)
+	euler_rotation.x = clamp(euler_rotation.x, -max_up_angle, max_down_angle)
+	
+	euler_rotation.y += mouse_input.x * (-1 if invert_x_axis else 1)
+	
+	global_transform.basis = Basis.from_euler(euler_rotation)

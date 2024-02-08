@@ -17,6 +17,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="Ground" parent="." instance=ExtResource("3_at54k")]
 
 [node name="PixelShader" type="Sprite2D" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_rguwr")
 position = Vector2(576, 324)
 scale = Vector2(9, 5.0625)
