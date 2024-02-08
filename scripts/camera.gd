@@ -20,9 +20,12 @@ func _ready() -> void:
 	cam.position.z = default_distance
 	spring_arm.spring_length = default_distance
 	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _process(delta) -> void:
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		return
+	
 	var mouse_input = Input.get_last_mouse_velocity() * delta * mouse_sensitivity
 	var euler_rotation = global_transform.basis.get_euler()
 	

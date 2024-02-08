@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bpogdemkdgtug"]
+[gd_scene load_steps=7 format=3 uid="uid://bpogdemkdgtug"]
 
 [ext_resource type="PackedScene" uid="uid://df0xqxcqv0rld" path="res://scenes/player.tscn" id="1_ffk2f"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_qx230"]
 [ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/ground.tscn" id="3_at54k"]
 [ext_resource type="Shader" uid="uid://camjyvxeib5vi" path="res://pixelation.tres" id="3_f0qx8"]
 [ext_resource type="Texture2D" uid="uid://dhx2b1uqbyruu" path="res://icon.svg" id="4_0euw1"]
@@ -10,6 +11,7 @@ shader = ExtResource("3_f0qx8")
 shader_parameter/Pixelisation = 512.0
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_qx230")
 
 [node name="Player" parent="." instance=ExtResource("1_ffk2f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
