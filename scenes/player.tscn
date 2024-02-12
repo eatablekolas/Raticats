@@ -1,77 +1,117 @@
-[gd_scene load_steps=11 format=3 uid="uid://df0xqxcqv0rld"]
+[gd_scene load_steps=14 format=3 uid="uid://df0xqxcqv0rld"]
 
+[ext_resource type="Animation" uid="uid://c555w3wdoexyh" path="res://animations/player/ledge_climb_1.res" id="1_wmmiv"]
 [ext_resource type="Texture2D" uid="uid://ck08de3uc48ed" path="res://textures/test_guy_idle_front.png" id="2_asp6l"]
 [ext_resource type="Script" path="res://scripts/character.gd" id="2_r6ko3"]
+[ext_resource type="Animation" uid="uid://bpdatvcui4v47" path="res://animations/player/RESET.res" id="2_rd7ws"]
 [ext_resource type="Script" path="res://scripts/ledge_controller.gd" id="3_4xkcg"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="3_7mt5t"]
+[ext_resource type="Animation" uid="uid://bcnoihiws23jf" path="res://animations/player/ledge_climb_2.res" id="3_d2pd6"]
 [ext_resource type="Theme" uid="uid://bwc3lgqciatio" path="res://interface/themes/test_ui.tres" id="5_0pwid"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mtsxo"]
+_data = {
+"RESET": ExtResource("2_rd7ws"),
+"ledge_climb_1": ExtResource("1_wmmiv"),
+"ledge_climb_2": ExtResource("3_d2pd6")
+}
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4osji"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8hnj"]
-shading_mode = 0
 albedo_texture = ExtResource("2_asp6l")
 albedo_texture_force_srgb = true
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_px3ku"]
 material = SubResource("StandardMaterial3D_i8hnj")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_os68t"]
-size = Vector3(0.5, 0.667, 1)
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_ejlmb"]
 margin = 0.1
 
 [node name="Player" type="Node3D"]
 
-[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("mesh", "cam_pivot")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mtsxo")
+}
+
+[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("anim_player", "collider", "mesh", "ledge_controller", "cam_pivot")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("2_r6ko3")
-mesh = NodePath("CharacterMesh")
-cam_pivot = NodePath("CameraPivot")
+anim_path = "res://animations/player/"
+anim_player = NodePath("../AnimationPlayer")
+collider = NodePath("CharacterCollider")
+mesh = NodePath("CharacterCollider/CharacterMesh")
+ledge_controller = NodePath("CharacterCollider/CharacterMesh/LedgeRays")
+cam_pivot = NodePath("CharacterCollider/CameraPivot")
 
 [node name="CharacterCollider" type="CollisionShape3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_4osji")
 
-[node name="CharacterMesh" type="MeshInstance3D" parent="Character"]
+[node name="CharacterMesh" type="MeshInstance3D" parent="Character/CharacterCollider"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_px3ku")
-skeleton = NodePath("../../..")
+skeleton = NodePath("../../../..")
 
-[node name="LedgeColliders" type="Node3D" parent="Character/CharacterMesh" node_paths=PackedStringArray("test_label")]
+[node name="LedgeRays" type="Node3D" parent="Character/CharacterCollider/CharacterMesh" node_paths=PackedStringArray("above_rays", "test_label")]
 script = ExtResource("3_4xkcg")
-test_label = NodePath("../../../TestUI/Label")
+above_rays = NodePath("Above")
+test_label = NodePath("../../../../TestUI/Label")
 
-[node name="3" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
-collision_layer = 0
-collision_mask = 8
-monitorable = false
+[node name="Above" type="Node3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.667, 0.5)
-shape = SubResource("BoxShape3D_os68t")
+[node name="Left" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/Above"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8.74228e-08)
+target_position = Vector3(0, 1.5, 1.5)
+collision_mask = 5
 
-[node name="2" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
-collision_layer = 0
-collision_mask = 8
-monitorable = false
+[node name="Middle" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/Above"]
+target_position = Vector3(0, 1.5, 1.5)
+collision_mask = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
-shape = SubResource("BoxShape3D_os68t")
+[node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/Above"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+target_position = Vector3(0, 1.5, 1.5)
+collision_mask = 5
 
-[node name="1" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
-collision_layer = 0
-collision_mask = 8
-monitorable = false
+[node name="2" type="Node3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.667, 0.5)
-shape = SubResource("BoxShape3D_os68t")
+[node name="Left" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8.74228e-08)
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
 
-[node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("cam", "spring_arm")]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+[node name="Middle" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
+
+[node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
+
+[node name="1" type="Node3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
+
+[node name="Left" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8.74228e-08)
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
+
+[node name="Middle" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
+
+[node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+target_position = Vector3(0, 0, 1.5)
+collision_mask = 5
+
+[node name="CameraPivot" type="Marker3D" parent="Character/CharacterCollider" node_paths=PackedStringArray("cam", "spring_arm")]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -0.00870514, 0.00217629)
 script = ExtResource("3_7mt5t")
 cam = NodePath("SpringArm3D/Camera3D")
 spring_arm = NodePath("SpringArm3D")
@@ -80,13 +120,13 @@ invert_y_axis = true
 mouse_sensitivity = 0.01
 collision_multiplier = 0.95
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Character/CameraPivot"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Character/CharacterCollider/CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 shape = SubResource("SphereShape3D_ejlmb")
 spring_length = 5.0
 margin = 0.1
 
-[node name="Camera3D" type="Camera3D" parent="Character/CameraPivot/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="Character/CharacterCollider/CameraPivot/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
 
@@ -112,3 +152,5 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("5_0pwid")
 text = "No"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="Character" method="_on_animation_player_animation_finished"]

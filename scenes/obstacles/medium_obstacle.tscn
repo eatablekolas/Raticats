@@ -1,21 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://uxll01ja0fun"]
+[gd_scene load_steps=4 format=3 uid="uid://uxll01ja0fun"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v4fmy"]
 size = Vector3(2, 2, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yhtwj"]
-shading_mode = 0
 albedo_color = Color(0.0627451, 0, 0.423529, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_jexjg"]
 material = SubResource("StandardMaterial3D_yhtwj")
 size = Vector3(2, 2, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_o8i02"]
-size = Vector3(1.8, 0.1, 0.1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_w37jo"]
-size = Vector3(0.1, 0.1, 0.8)
 
 [node name="Obstacle" type="StaticBody3D"]
 collision_layer = 4
@@ -28,23 +21,3 @@ shape = SubResource("BoxShape3D_v4fmy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("BoxMesh_jexjg")
-
-[node name="Ledges" type="Area3D" parent="."]
-collision_layer = 8
-collision_mask = 0
-
-[node name="Ledge" type="CollisionShape3D" parent="Ledges"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0.5)
-shape = SubResource("BoxShape3D_o8i02")
-
-[node name="Ledge2" type="CollisionShape3D" parent="Ledges"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
-shape = SubResource("BoxShape3D_o8i02")
-
-[node name="Ledge3" type="CollisionShape3D" parent="Ledges"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 0)
-shape = SubResource("BoxShape3D_w37jo")
-
-[node name="Ledge4" type="CollisionShape3D" parent="Ledges"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2, 0)
-shape = SubResource("BoxShape3D_w37jo")

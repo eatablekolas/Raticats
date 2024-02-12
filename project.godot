@@ -24,11 +24,12 @@ window/stretch/mode="canvas_items"
 [file_customization]
 
 folder_colors={
-"res://interface/": "red",
-"res://materials/": "orange",
-"res://scenes/": "yellow",
-"res://scripts/": "green",
-"res://textures/": "teal"
+"res://animations/": "red",
+"res://interface/": "orange",
+"res://materials/": "yellow",
+"res://scenes/": "green",
+"res://scripts/": "teal",
+"res://textures/": "blue"
 }
 
 [input]

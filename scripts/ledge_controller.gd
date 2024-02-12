@@ -1,29 +1,44 @@
 extends Node3D
 
+class_name LedgeController
+
+@export var above_rays: Node3D
 @export var test_label: Label
 
-var ledge_colliders: Dictionary = {}
+# Checks if space above the ledge is free
+func is_space_above_free() -> bool:
+	for ray: RayCast3D in above_rays.get_children():
+		if ray.is_colliding():
+			return false
+	
+	return true
 
-func _ready() -> void:
-	for collider: Area3D in get_children():
-		if !collider.name.is_valid_int():
-			push_warning("One of the player's ledge colliders doesn't have a valid integer in its' name!")
-		
-		# The key of a collider in the dictionary is also its' height
-		var height: int = collider.name.to_int()
-		ledge_colliders[height] = collider
+# Checks if the player is close enough to an obstacle on a certain level to climb it (Head/Chest)
+func is_hitting_on_level(level: String) -> bool:
+	for ray: RayCast3D in get_node(level).get_children():
+		if !ray.is_colliding():
+			return false
+	
+	return true
 
 func get_ledge_height() -> int:
+	if !is_space_above_free():
+		return 0
+	
 	var max_height: int = 0
 	
-	# For some reason, in GDScript, a for loop goes through keys in a dictionary, not values
-	for height: int in ledge_colliders:
-		if height > max_height && ledge_colliders[height].has_overlapping_areas():
-			# I assume that since the collider only detects areas on the 'ledge' layer,
-			# there's no need for additional checks
+	for ray_level: Node3D in get_children():
+		if !ray_level.name.is_valid_int():
+			if ray_level != above_rays:
+				push_error("One of the player's ledge colliders doesn't have a valid integer in its' name!")
+			
+			continue
+		
+		var height: int = ray_level.name.to_int()
+		if height > max_height and is_hitting_on_level(ray_level.name):
 			max_height = height
 	
 	return max_height
 
-func _process(_delta) -> void:
+func _process(_delta):
 	test_label.text = str(get_ledge_height())

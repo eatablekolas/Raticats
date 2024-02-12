@@ -16,6 +16,10 @@ shader_parameter/Pixelisation = 512.0
 [node name="Main" type="Node3D"]
 script = ExtResource("1_qx230")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.5, -0.75, 0.433013, 2.78059e-08, 0.5, 0.866026, -0.866025, -0.433013, 0.25, 0, 0, 0)
+shadow_enabled = true
+
 [node name="Player" parent="." instance=ExtResource("1_ffk2f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
@@ -27,10 +31,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5)
 
 [node name="Obstacle2" parent="Obstacles" instance=ExtResource("5_of67v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -5)
 
 [node name="Obstacle3" parent="Obstacles" instance=ExtResource("6_kkkow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.1, -5)
 
 [node name="Obstacle5" parent="Obstacles" instance=ExtResource("6_kkkow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.1, -5)
