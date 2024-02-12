@@ -1,8 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://df0xqxcqv0rld"]
+[gd_scene load_steps=11 format=3 uid="uid://df0xqxcqv0rld"]
 
 [ext_resource type="Texture2D" uid="uid://ck08de3uc48ed" path="res://textures/test_guy_idle_front.png" id="2_asp6l"]
 [ext_resource type="Script" path="res://scripts/character.gd" id="2_r6ko3"]
+[ext_resource type="Script" path="res://scripts/ledge_controller.gd" id="3_4xkcg"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="3_7mt5t"]
+[ext_resource type="Theme" uid="uid://bwc3lgqciatio" path="res://interface/themes/test_ui.tres" id="5_0pwid"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4osji"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8hnj"]
 shading_mode = 0
@@ -12,7 +16,8 @@ albedo_texture_force_srgb = true
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_px3ku"]
 material = SubResource("StandardMaterial3D_i8hnj")
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4osji"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_os68t"]
+size = Vector3(1, 0.667, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ejlmb"]
 margin = 0.1
@@ -21,17 +26,49 @@ margin = 0.1
 
 [node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("mesh", "cam_pivot")]
 collision_layer = 2
+collision_mask = 5
 script = ExtResource("2_r6ko3")
-mesh = NodePath("MeshInstance3D")
+mesh = NodePath("CharacterMesh")
 cam_pivot = NodePath("CameraPivot")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
+[node name="CharacterCollider" type="CollisionShape3D" parent="Character"]
+shape = SubResource("CapsuleShape3D_4osji")
+
+[node name="CharacterMesh" type="MeshInstance3D" parent="Character"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_px3ku")
 skeleton = NodePath("../../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character"]
-shape = SubResource("CapsuleShape3D_4osji")
+[node name="LedgeColliders" type="Node3D" parent="Character/CharacterMesh" node_paths=PackedStringArray("test_label", "high_ledge", "medium_ledge", "low_ledge")]
+script = ExtResource("3_4xkcg")
+test_label = NodePath("../../../TestUI/Label")
+high_ledge = NodePath("High")
+medium_ledge = NodePath("Medium")
+low_ledge = NodePath("Low")
+
+[node name="High" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/High"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.667, 0.5)
+shape = SubResource("BoxShape3D_os68t")
+
+[node name="Medium" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+shape = SubResource("BoxShape3D_os68t")
+
+[node name="Low" type="Area3D" parent="Character/CharacterMesh/LedgeColliders"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/CharacterMesh/LedgeColliders/Low"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.667, 0.5)
+shape = SubResource("BoxShape3D_os68t")
 
 [node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("cam", "spring_arm")]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
@@ -52,3 +89,26 @@ margin = 0.1
 [node name="Camera3D" type="Camera3D" parent="Character/CameraPivot/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
+
+[node name="TestUI" type="ReferenceRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TestUI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -98.0
+offset_top = -80.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_0pwid")
+text = "No"
