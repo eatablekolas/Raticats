@@ -35,16 +35,15 @@ libraries = {
 "": SubResource("AnimationLibrary_mtsxo")
 }
 
-[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("anim_player", "collider", "mesh", "ledge_controller", "cam_pivot")]
+[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("anim_player", "collider", "ledge_controller", "cam_pivot")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("2_r6ko3")
 anim_path = "res://animations/player/"
 anim_player = NodePath("../AnimationPlayer")
 collider = NodePath("CharacterCollider")
-mesh = NodePath("CharacterCollider/CharacterMesh")
 ledge_controller = NodePath("CharacterCollider/CharacterMesh/LedgeRays")
-cam_pivot = NodePath("CharacterCollider/CameraPivot")
+cam_pivot = NodePath("CameraPivot")
 
 [node name="CharacterCollider" type="CollisionShape3D" parent="Character"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -110,8 +109,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
 target_position = Vector3(0, 0, 1.5)
 collision_mask = 5
 
-[node name="CameraPivot" type="Marker3D" parent="Character/CharacterCollider" node_paths=PackedStringArray("cam", "spring_arm")]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -0.00870514, 0.00217629)
+[node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("cam", "spring_arm")]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1, 0)
 script = ExtResource("3_7mt5t")
 cam = NodePath("SpringArm3D/Camera3D")
 spring_arm = NodePath("SpringArm3D")
@@ -120,13 +119,13 @@ invert_y_axis = true
 mouse_sensitivity = 0.01
 collision_multiplier = 0.95
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Character/CharacterCollider/CameraPivot"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Character/CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 shape = SubResource("SphereShape3D_ejlmb")
 spring_length = 5.0
 margin = 0.1
 
-[node name="Camera3D" type="Camera3D" parent="Character/CharacterCollider/CameraPivot/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="Character/CameraPivot/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
 

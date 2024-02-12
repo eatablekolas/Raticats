@@ -40,5 +40,6 @@ func get_ledge_height() -> int:
 	
 	return max_height
 
+# For testing purposes - should remove later
 func _process(_delta):
 	test_label.text = str(get_ledge_height())
