@@ -28,9 +28,9 @@ func _physics_process(delta) -> void:
 	# Add the gravity. (or climb ledge)
 	if not is_on_floor():
 		if Input.is_action_pressed("jump"):
-			var ledge_height: int = ledge_controller.get_ledge_height()
-			if ledge_height > 0:
-				var anim_name: String = "ledge_climb_%d" % ledge_height
+			var ledge_level: int = ledge_controller.get_ledge_level()
+			if ledge_level > 0:
+				var anim_name: String = "ledge_climb_%d" % ledge_level
 				
 				# Might remove this check later for better performance
 				if !FileAccess.file_exists(anim_path + anim_name + ".res"):
