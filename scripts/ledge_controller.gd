@@ -62,6 +62,7 @@ func get_ledge() -> Ledge:
 	if ledge.level == 0:
 		return ledge
 	
+	ledge.exists = true
 	ledge.position = get_ledge_position()
 	ledge.rotation = get_ledge_rotation()
 	return ledge
