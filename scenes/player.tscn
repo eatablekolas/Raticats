@@ -60,6 +60,11 @@ above_rays = NodePath("Above")
 height_ray = NodePath("Height")
 test_label = NodePath("../../../../TestUI/Label")
 
+[node name="Height" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 1.5)
+target_position = Vector3(0, -3.5, 0)
+collision_mask = 5
+
 [node name="Above" type="Node3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
@@ -108,11 +113,6 @@ collision_mask = 5
 [node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
 target_position = Vector3(0, 0, 1.5)
-collision_mask = 5
-
-[node name="Height" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 1.5)
-target_position = Vector3(0, -3.5, 0)
 collision_mask = 5
 
 [node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("cam", "spring_arm")]
