@@ -6,7 +6,7 @@ class_name LedgeController
 @export var height_ray: RayCast3D
 @export var test_label: Label
 
-var current_level = 0
+var current_ray: RayCast3D
 
 # Checks if space above the ledge is free
 func is_space_above_free() -> bool:
@@ -41,18 +41,40 @@ func get_ledge_level() -> int:
 		if level > max_level and is_hitting_on_level(ray_level.name):
 			max_level = level
 	
-	current_level = max_level
+	current_ray = get_current_ray(max_level)
 	return max_level
 
-func get_ledge_height() -> float:
-	return height_ray.get_collision_point().y
+func get_current_ray(current_level: int) -> RayCast3D:
+	if current_level == 0:
+		return null
+	
+	var ray_set: Node3D = get_node(str(current_level))
+	if ray_set == null:
+		return null
+	
+	var ray: RayCast3D = ray_set.get_node("Middle")
+	return ray
+
+func get_ledge_position() -> Vector3:
+	if current_ray == null:
+		#push_warning("Trying to get ledge position without current ray!")
+		return Vector3.ZERO
+	
+	var pos: Vector3 = current_ray.get_collision_point() + (current_ray.get_collision_normal() * 0.5)
+	pos.y = height_ray.get_collision_point().y - current_ray.get_parent_node_3d().position.y - 1.0
+	
+	return pos
 
 # WORK IN PROGRESS
-func get_ledge_position() -> Vector3:
-	return Vector3.ZERO
-
-func get_ledge_rotation() -> float:
-	return 0.0
+func get_ledge_rotation() -> Vector3:
+	if current_ray == null:
+		#push_warning("Trying to get ledge rotation without current ray!")
+		return Vector3.ZERO
+	
+	var normal: Vector3 = current_ray.get_collision_normal()
+	var angle: float = normal.angle_to(Vector3.BACK)
+	
+	return Vector3(0.0, angle, 0.0)
 # WORK IN PROGRESS
 
 func get_ledge() -> Ledge:
@@ -62,12 +84,10 @@ func get_ledge() -> Ledge:
 	if ledge.level == 0:
 		return ledge
 	
-	ledge.exists = true
 	ledge.position = get_ledge_position()
 	ledge.rotation = get_ledge_rotation()
 	return ledge
 
 # For testing purposes - should remove later
 func _process(_delta):
-	test_label.text = str(get_ledge_level())
-	get_ledge_height()
+	test_label.text = str(get_ledge_position())
