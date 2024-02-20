@@ -65,17 +65,15 @@ func get_ledge_position() -> Vector3:
 	
 	return pos
 
-# WORK IN PROGRESS
 func get_ledge_rotation() -> Vector3:
 	if current_ray == null:
 		#push_warning("Trying to get ledge rotation without current ray!")
 		return Vector3.ZERO
 	
 	var normal: Vector3 = current_ray.get_collision_normal()
-	var angle: float = normal.angle_to(Vector3.BACK)
+	var angle: float = normal.signed_angle_to(Vector3.BACK, Vector3.DOWN)
 	
 	return Vector3(0.0, angle, 0.0)
-# WORK IN PROGRESS
 
 func get_ledge() -> Ledge:
 	var ledge = Ledge.new()
