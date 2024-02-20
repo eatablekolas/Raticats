@@ -35,12 +35,17 @@ libraries = {
 "": SubResource("AnimationLibrary_mtsxo")
 }
 
-[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("anim_player", "collider", "ledge_controller", "cam_pivot")]
+[node name="AnimationTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="Character" type="CharacterBody3D" parent="." node_paths=PackedStringArray("anim_player", "anim_timer", "collider", "ledge_controller", "cam_pivot")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("2_r6ko3")
 anim_path = "res://animations/player/"
 anim_player = NodePath("../AnimationPlayer")
+anim_timer = NodePath("../AnimationTimer")
 collider = NodePath("CharacterCollider")
 ledge_controller = NodePath("CharacterCollider/CharacterMesh/LedgeRays")
 cam_pivot = NodePath("CameraPivot")
@@ -159,3 +164,4 @@ theme = ExtResource("5_0pwid")
 text = "No"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="Character" method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="AnimationTimer" to="Character" method="_on_animation_timer_timeout"]

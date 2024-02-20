@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @export var anim_path: String
 @export var anim_player: AnimationPlayer
+@export var anim_timer: Timer
 @export var collider: CollisionShape3D
 @export var ledge_controller: LedgeController
 @export var cam_pivot: Marker3D
@@ -41,16 +42,23 @@ func _physics_process(delta) -> void:
 				
 				# Since the animation moves the collider, and not the character,
 				# it's necessary to temporarily focus the camera on the collider
-				cam_pivot.reparent(collider, false)
+				cam_pivot.reparent(collider)
 				cam_pivot.position = default_pivot_pos - default_collider_pos
 				
-				#var angle: float = ledge.rotation.angle_to(Vector3.BACK)
-				#cam_pivot.rotation = cam_pivot.rotation.rotated(cam_pivot.rotation.normalized(), angle)
-				
+				# First we change the position, so the camera follows the character
 				position = ledge.position
+				
+				# Then we make the camera independent of the character,
+				# so it doesn't snap the rotation weirdly
+				# NOTE: We make it independent for a split second (see the anim_timer's Wait Time),
+				# because then we need it to keep following the character during the animation
+				# I hate it, but it works
+				# Maybe if I add tweens it won't look so jaggy
+				cam_pivot.top_level = true
 				rotation = ledge.rotation
 				
 				anim_player.play(anim_name)
+				anim_timer.start()
 				return
 		
 		velocity.y -= gravity * delta
@@ -91,6 +99,9 @@ func _on_animation_player_animation_finished(_anim_name):
 	rotation = Vector3.ZERO
 	
 	# Re-focus the camera on the character
-	cam_pivot.reparent(self, false)
+	cam_pivot.reparent(self)
 	cam_pivot.position = default_pivot_pos
 	#cam_pivot.rotation = Vector3.ZERO
+
+func _on_animation_timer_timeout():
+	cam_pivot.top_level = false
