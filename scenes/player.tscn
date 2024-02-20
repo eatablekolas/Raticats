@@ -92,32 +92,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Left" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8.74228e-08)
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="Middle" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="1" type="Node3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays"]
 
 [node name="Left" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8.74228e-08)
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="Middle" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="Right" type="RayCast3D" parent="Character/CharacterCollider/CharacterMesh/LedgeRays/1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 0.75)
 collision_mask = 5
 
 [node name="CameraPivot" type="Marker3D" parent="Character" node_paths=PackedStringArray("cam", "spring_arm")]
@@ -141,6 +141,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
 
 [node name="TestUI" type="ReferenceRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

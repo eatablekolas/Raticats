@@ -1,13 +1,23 @@
-[gd_scene load_steps=10 format=3 uid="uid://bpogdemkdgtug"]
+[gd_scene load_steps=13 format=3 uid="uid://bpogdemkdgtug"]
 
 [ext_resource type="PackedScene" uid="uid://df0xqxcqv0rld" path="res://scenes/player.tscn" id="1_ffk2f"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_qx230"]
-[ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/ground.tscn" id="3_at54k"]
+[ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/floor.tscn" id="3_at54k"]
 [ext_resource type="Shader" uid="uid://camjyvxeib5vi" path="res://pixelation.tres" id="3_f0qx8"]
 [ext_resource type="Texture2D" uid="uid://dhx2b1uqbyruu" path="res://textures/icon.svg" id="4_0euw1"]
 [ext_resource type="PackedScene" uid="uid://uxll01ja0fun" path="res://scenes/obstacles/medium_obstacle.tscn" id="5_of67v"]
 [ext_resource type="PackedScene" uid="uid://l17s2v4ee8rt" path="res://scenes/obstacles/tall_obstacle.tscn" id="6_idben"]
 [ext_resource type="PackedScene" uid="uid://cp4suwc6dbfdw" path="res://scenes/obstacles/small_obstacle.tscn" id="6_kkkow"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q1nir"]
+size = Vector3(14, 3, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxo7a"]
+albedo_color = Color(0.235294, 0.176471, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wy3lx"]
+material = SubResource("StandardMaterial3D_nxo7a")
+size = Vector3(14, 3, 7)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rguwr"]
 shader = ExtResource("3_f0qx8")
@@ -22,24 +32,36 @@ shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_ffk2f")]
 
-[node name="Ground" parent="." instance=ExtResource("3_at54k")]
+[node name="Floor" parent="." instance=ExtResource("3_at54k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -5)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -8)
+collision_layer = 5
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_q1nir")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_wy3lx")
 
 [node name="Obstacles" type="Node3D" parent="."]
 
-[node name="Obstacle" parent="Obstacles" instance=ExtResource("6_idben")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5)
+[node name="Obstacle" parent="Obstacles" instance=ExtResource("6_kkkow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3.1, -6)
 
 [node name="Obstacle2" parent="Obstacles" instance=ExtResource("5_of67v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -5)
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -4, 3.1, -9)
 
-[node name="Obstacle3" parent="Obstacles" instance=ExtResource("6_kkkow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.1, -5)
+[node name="Obstacle3" parent="Obstacles" instance=ExtResource("6_idben")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 3, -10)
+
+[node name="Obstacle4" parent="Obstacles" instance=ExtResource("5_of67v")]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 4, 8, -9)
 
 [node name="Obstacle5" parent="Obstacles" instance=ExtResource("6_kkkow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.1, -5)
-
-[node name="Obstacle4" parent="Obstacles" instance=ExtResource("6_kkkow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 12.25, -6)
 
 [node name="PixelShader" type="Sprite2D" parent="."]
 visible = false

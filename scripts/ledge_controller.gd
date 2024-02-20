@@ -87,5 +87,5 @@ func get_ledge() -> Ledge:
 	return ledge
 
 # For testing purposes - should remove later
-func _process(_delta):
-	test_label.text = str(get_ledge_position())
+#func _process(_delta):
+	#test_label.text = str(get_ledge_position())
