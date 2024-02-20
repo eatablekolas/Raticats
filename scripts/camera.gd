@@ -19,8 +19,6 @@ func _ready() -> void:
 	max_down_angle = deg_to_rad(max_down_angle)
 	cam.position.z = default_distance
 	spring_arm.spring_length = default_distance
-	
-	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _process(delta) -> void:
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

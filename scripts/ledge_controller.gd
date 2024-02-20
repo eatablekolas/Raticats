@@ -6,6 +6,7 @@ class_name LedgeController
 @export var height_ray: RayCast3D
 @export var test_label: Label
 
+# The middle ray at the current ledge level
 var current_ray: RayCast3D
 
 # Checks if space above the ledge is free
@@ -24,6 +25,8 @@ func is_hitting_on_level(level: String) -> bool:
 	
 	return true
 
+# Returns the level of the ledge the player has to step on
+# (for picking the right animation and rays)
 func get_ledge_level() -> int:
 	if !is_space_above_free():
 		return 0
@@ -44,6 +47,7 @@ func get_ledge_level() -> int:
 	current_ray = get_current_ray(max_level)
 	return max_level
 
+# Returns the middle ray at the current ledge level
 func get_current_ray(current_level: int) -> RayCast3D:
 	if current_level == 0:
 		return null
@@ -55,19 +59,20 @@ func get_current_ray(current_level: int) -> RayCast3D:
 	var ray: RayCast3D = ray_set.get_node("Middle")
 	return ray
 
+# Returns the position at which the character should begin its' ledge climb animation
 func get_ledge_position() -> Vector3:
 	if current_ray == null:
-		#push_warning("Trying to get ledge position without current ray!")
 		return Vector3.ZERO
 	
+	# More math magic
 	var pos: Vector3 = current_ray.get_collision_point() + (current_ray.get_collision_normal() * 0.5)
 	pos.y = height_ray.get_collision_point().y - current_ray.get_parent_node_3d().position.y - 1.0
 	
 	return pos
 
+# Returns the rotation at which the character should begin its' ledge climb animation
 func get_ledge_rotation() -> Vector3:
 	if current_ray == null:
-		#push_warning("Trying to get ledge rotation without current ray!")
 		return Vector3.ZERO
 	
 	var normal: Vector3 = current_ray.get_collision_normal()
@@ -75,6 +80,8 @@ func get_ledge_rotation() -> Vector3:
 	
 	return Vector3(0.0, angle, 0.0)
 
+# Returns a Ledge object with all necessary info
+# This is the main function of this script (it's meant to be the only one that is used by other scripts)
 func get_ledge() -> Ledge:
 	var ledge = Ledge.new()
 	ledge.level = get_ledge_level()

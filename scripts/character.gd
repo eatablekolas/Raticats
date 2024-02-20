@@ -1,3 +1,5 @@
+# NOTE: Part of this code comes from Godot's default CharacterBody3D code
+
 extends CharacterBody3D
 
 @export var anim_path: String
@@ -26,8 +28,8 @@ func _physics_process(delta) -> void:
 	if anim_player.is_playing():
 		return
 	
-	# Add the gravity. (or climb ledge)
 	if not is_on_floor():
+		# Add the gravity. (or climb ledge, if possible)
 		if Input.is_action_pressed("jump"):
 			var ledge: Ledge = ledge_controller.get_ledge()
 			if ledge.level > 0:
@@ -59,9 +61,8 @@ func _physics_process(delta) -> void:
 				
 				anim_player.play(anim_name)
 				anim_timer.start()
-				return
-		
-		velocity.y -= gravity * delta
+		else:
+			velocity.y -= gravity * delta
 	
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -73,10 +74,12 @@ func _physics_process(delta) -> void:
 	direction = direction.rotated(Vector3.UP, cam_pivot.rotation.y)
 	
 	# Apparently Vector2.ZERO is equal to 'false' in boolean
+	# So if there's no input, the input vector is (0, 0), which equals to false
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 		
+		# Some math magic
 		var target_rotation: float = (direction.signed_angle_to(Vector3.RIGHT, Vector3.DOWN)) - (PI/2)
 		if target_rotation > PI:
 			target_rotation -= 2 * PI
@@ -95,13 +98,13 @@ func _on_animation_player_animation_finished(_anim_name):
 	position = collider.global_position - collider_offset
 	collider.position = default_collider_pos
 	
+	# Same for the rotation
 	collider.rotation = rotation
 	rotation = Vector3.ZERO
 	
 	# Re-focus the camera on the character
 	cam_pivot.reparent(self)
 	cam_pivot.position = default_pivot_pos
-	#cam_pivot.rotation = Vector3.ZERO
 
 func _on_animation_timer_timeout():
 	cam_pivot.top_level = false

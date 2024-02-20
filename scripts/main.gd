@@ -1,5 +1,7 @@
 extends Node3D
 
+# For now this script only allows the player to get their cursor out of the game window
+# Later to have an actual pause function
 func _process(_delta) -> void:
 	if Input.is_action_just_pressed("pause"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
