@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Raticats"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/test/main.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://icon.png"
 
@@ -27,9 +27,10 @@ folder_colors={
 "res://animations/": "red",
 "res://interface/": "orange",
 "res://materials/": "yellow",
-"res://scenes/": "green",
-"res://scripts/": "teal",
-"res://textures/": "blue"
+"res://models/": "green",
+"res://scenes/": "teal",
+"res://scripts/": "blue",
+"res://textures/": "purple"
 }
 
 [input]

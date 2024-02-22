@@ -2,12 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://df0xqxcqv0rld" path="res://scenes/player.tscn" id="1_ffk2f"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_qx230"]
-[ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/floor.tscn" id="3_at54k"]
+[ext_resource type="PackedScene" uid="uid://dtofj7g73urmo" path="res://scenes/test/floor.tscn" id="3_at54k"]
 [ext_resource type="Shader" uid="uid://camjyvxeib5vi" path="res://pixelation.tres" id="3_f0qx8"]
 [ext_resource type="Texture2D" uid="uid://dhx2b1uqbyruu" path="res://textures/icon.svg" id="4_0euw1"]
-[ext_resource type="PackedScene" uid="uid://uxll01ja0fun" path="res://scenes/obstacles/medium_obstacle.tscn" id="5_of67v"]
-[ext_resource type="PackedScene" uid="uid://l17s2v4ee8rt" path="res://scenes/obstacles/tall_obstacle.tscn" id="6_idben"]
-[ext_resource type="PackedScene" uid="uid://cp4suwc6dbfdw" path="res://scenes/obstacles/small_obstacle.tscn" id="6_kkkow"]
+[ext_resource type="PackedScene" uid="uid://uxll01ja0fun" path="res://scenes/test/obstacles/medium_obstacle.tscn" id="5_of67v"]
+[ext_resource type="PackedScene" uid="uid://l17s2v4ee8rt" path="res://scenes/test/obstacles/tall_obstacle.tscn" id="6_idben"]
+[ext_resource type="PackedScene" uid="uid://cp4suwc6dbfdw" path="res://scenes/test/obstacles/small_obstacle.tscn" id="6_kkkow"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q1nir"]
 size = Vector3(14, 3, 7)
