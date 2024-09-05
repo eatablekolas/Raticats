@@ -5,8 +5,7 @@ extends Marker3D
 @export var invert_x_axis: bool
 @export var invert_y_axis: bool
 
-@export_range(0.0001, 0.1, 0.0001) var mouse_sensitivity: float = 1
-@export_range(0.1, 1.0, 0.01) var collision_multiplier: float = 0.9
+@export_range(0.0001, 0.1, 0.0001) var mouse_sensitivity: float = 0.01
 @export_range(0.0, 90.0, 0.1) var max_up_angle: float = 60
 @export_range(0.0, 90.0, 0.1) var max_down_angle: float = 30
 @export_range(0.0, 100, 0.1) var default_distance: float = 5.0
@@ -20,7 +19,12 @@ func _ready() -> void:
 	cam.position.z = default_distance
 	spring_arm.spring_length = default_distance
 
-func _process(delta) -> void:
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("pause"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return
 	

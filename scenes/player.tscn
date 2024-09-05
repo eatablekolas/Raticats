@@ -127,8 +127,6 @@ cam = NodePath("SpringArm3D/Camera3D")
 spring_arm = NodePath("SpringArm3D")
 invert_x_axis = true
 invert_y_axis = true
-mouse_sensitivity = 0.01
-collision_multiplier = 0.95
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Character/CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
